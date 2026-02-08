@@ -93,13 +93,13 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
       
         if (this.updateCounter++ >= UPDATE_INTERVAL || this.cachedRingStack.isEmpty()) {  
             this.updateCounter = 0;  
-            this.cachedRingStack = getRingFromInventory(player);  
+            this.cachedRingStack = getRing(player);  
         }  
     
         return this.cachedRingStack;  
     }
 
-	public static ItemStack getRingFromInventory(EntityPlayer player) {  
+	public static ItemStack getRing(EntityPlayer player) {  
         IEquipmentCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_EQUIPMENT, null);  
         if (cap != null) {  
             IInventory inv = cap.getInventory(EnumEquipmentInventory.RING);  
@@ -223,7 +223,7 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
 		IEntityCustomCollisionsCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_ENTITY_CUSTOM_BLOCK_COLLISIONS, null);
 
 		if(cap != null && cap.isPhasing()) {
-			ItemStack stack = getRingFromInventory(player);
+			ItemStack stack = getRing(player);
 
 			if(!stack.isEmpty()) {
 				ItemRingOfDispersion item = (ItemRingOfDispersion) stack.getItem();
@@ -260,7 +260,7 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
 			IEntityCustomCollisionsCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_ENTITY_CUSTOM_BLOCK_COLLISIONS, null);
 
 			if(cap != null && cap.isPhasing()) {
-				ItemStack stack = getRingFromInventory(player);
+				ItemStack stack = getRing(player);
 
 				if(!stack.isEmpty()) {
 					ItemRingOfDispersion item = (ItemRingOfDispersion) stack.getItem();

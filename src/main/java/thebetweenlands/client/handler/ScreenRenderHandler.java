@@ -161,7 +161,7 @@ public class ScreenRenderHandler extends Gui {
 
 				float targetDispersionPercentage = 0;
 
-				ItemStack ring = RingOfDispersionEntityCapability.getRingFromInventory(player);
+				ItemStack ring = RingOfDispersionEntityCapability.getRing(player);
 				if(!ring.isEmpty()) {
 					ItemRingOfDispersion item = (ItemRingOfDispersion) ring.getItem();
 					targetDispersionPercentage = item.getTimer(ring) / (float)item.getMaxPhasingDuration(ring);
