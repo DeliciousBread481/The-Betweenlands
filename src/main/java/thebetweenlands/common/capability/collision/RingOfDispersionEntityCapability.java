@@ -99,7 +99,7 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
         return this.cachedRingStack;  
     }
 
-	private static ItemStack getRingFromInventory(EntityPlayer player) {  
+	public static ItemStack getRingFromInventory(EntityPlayer player) {  
         IEquipmentCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_EQUIPMENT, null);  
         if (cap != null) {  
             IInventory inv = cap.getInventory(EnumEquipmentInventory.RING);  
