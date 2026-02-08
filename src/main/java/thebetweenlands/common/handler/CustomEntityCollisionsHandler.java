@@ -45,15 +45,17 @@ public final class CustomEntityCollisionsHandler {
 			gathering = true;
 			try {
 				if(entity != null) {
-					IEntityCustomCollisionsCapability cap = entity.getCapability(CapabilityRegistry.CAPABILITY_ENTITY_CUSTOM_BLOCK_COLLISIONS, null);
-
-					if(cap != null || entity instanceof IEntityCustomBlockCollisions) {
-						if(cap != null) {
-							cap.getCustomCollisionBoxes(HELPER, event.getAabb(), event.getCollisionBoxesList());
-						} else {
-							((IEntityCustomBlockCollisions) event.getEntity()).getCustomCollisionBoxes(event.getAabb(), event.getCollisionBoxesList());
-						}
-					}
+					IEntityCustomCollisionsCapability cap = entity.getCapability(CapabilityRegistry.CAPABILITY_ENTITY_CUSTOM_BLOCK_COLLISIONS, null);  
+  
+                    if(cap != null) {  
+                        try {  
+                            cap.getCustomCollisionBoxes(HELPER, event.getAabb(), event.getCollisionBoxesList());  
+                        } catch (Exception e) {  
+                            e.printStackTrace();  
+                        }  
+                    } else if (entity instanceof IEntityCustomBlockCollisions) {  
+                        ((IEntityCustomBlockCollisions) event.getEntity()).getCustomCollisionBoxes(event.getAabb(), event.getCollisionBoxesList());  
+                    }  
 				}
 
 				/*List<AxisAlignedBB> processedAabbList = null;

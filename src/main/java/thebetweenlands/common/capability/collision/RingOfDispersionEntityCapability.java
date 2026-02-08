@@ -30,6 +30,10 @@ import thebetweenlands.common.lib.ModInfo;
 import thebetweenlands.common.registries.CapabilityRegistry;
 
 public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDispersionEntityCapability, IEntityCustomCollisionsCapability, EntityPlayer> implements IEntityCustomCollisionsCapability {
+    private ItemStack cachedRingStack = ItemStack.EMPTY;  
+    private int updateCounter = 0;  
+    private static final int UPDATE_INTERVAL = 5;
+    
 	@Override
 	public ResourceLocation getID() {
 		return new ResourceLocation(ModInfo.ID, "ring_of_dispersion");
@@ -54,11 +58,6 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
 	public boolean isApplicable(Entity entity) {
 		return entity instanceof EntityPlayer;
 	}
-
-
-
-
-
 
 	private boolean isPhasing;
 	private double viewObstructionDistance;
@@ -88,23 +87,34 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
 	public double getObstructionCheckDistance() {
 		return 0.25D;
 	}
+	
+	private ItemStack getCachedRing() {  
+        EntityPlayer player = this.getEntity();  
+      
+        if (this.updateCounter++ >= UPDATE_INTERVAL || this.cachedRingStack.isEmpty()) {  
+            this.updateCounter = 0;  
+            this.cachedRingStack = getRingFromInventory(player);  
+        }  
+    
+        return this.cachedRingStack;  
+    }
 
-	public static ItemStack getRing(EntityPlayer player) {
-		IEquipmentCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_EQUIPMENT, null);
-		if (cap != null) {
-			IInventory inv = cap.getInventory(EnumEquipmentInventory.RING);
-
-			for(int i = 0; i < inv.getSizeInventory(); i++) {
-				ItemStack stack = inv.getStackInSlot(i);
-
-				if(!stack.isEmpty() && stack.getItem() instanceof ItemRingOfDispersion) {
-					return stack;
-				}
-			}
-		}
-
-		return ItemStack.EMPTY;
-	}
+	private static ItemStack getRingFromInventory(EntityPlayer player) {  
+        IEquipmentCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_EQUIPMENT, null);  
+        if (cap != null) {  
+            IInventory inv = cap.getInventory(EnumEquipmentInventory.RING);  
+  
+            for(int i = 0; i < inv.getSizeInventory(); i++) {  
+                ItemStack stack = inv.getStackInSlot(i);  
+  
+                if(!stack.isEmpty() && stack.getItem() instanceof ItemRingOfDispersion) {  
+                    return stack;  
+                }  
+            }  
+        }  
+  
+        return ItemStack.EMPTY;  
+    }  
 
 	public static double calculateAABBDistance(AxisAlignedBB aabb1, AxisAlignedBB aabb2) {
 		double dist;
@@ -133,7 +143,7 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
 		this.obstructionDistance = Double.MAX_VALUE;
 
 		EntityPlayer player = this.getEntity();
-		ItemStack stack = getRing(player);
+		ItemStack stack = getCachedRing();
 
 		if(!stack.isEmpty()) {
 			ItemRingOfDispersion item = (ItemRingOfDispersion) stack.getItem();
@@ -213,7 +223,7 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
 		IEntityCustomCollisionsCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_ENTITY_CUSTOM_BLOCK_COLLISIONS, null);
 
 		if(cap != null && cap.isPhasing()) {
-			ItemStack stack = getRing(player);
+			ItemStack stack = getRingFromInventory(player);
 
 			if(!stack.isEmpty()) {
 				ItemRingOfDispersion item = (ItemRingOfDispersion) stack.getItem();
@@ -250,7 +260,7 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
 			IEntityCustomCollisionsCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_ENTITY_CUSTOM_BLOCK_COLLISIONS, null);
 
 			if(cap != null && cap.isPhasing()) {
-				ItemStack stack = getRing(player);
+				ItemStack stack = getRingFromInventory(player);
 
 				if(!stack.isEmpty()) {
 					ItemRingOfDispersion item = (ItemRingOfDispersion) stack.getItem();
