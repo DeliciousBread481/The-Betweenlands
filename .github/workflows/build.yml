@@ -58,13 +58,28 @@ jobs:
         BS_PULL_REQUEST: 'false'
         BS_IS_DEPLOYMENT: 'false'
         
-    - name: Deploying
-      run: |
-        echo "Preparing deployment"
-        chmod +x "./.github/workflows/${GITHUB_WORKFLOW}/deploy.sh"
-        source "./.github/workflows/${GITHUB_WORKFLOW}/deploy.sh"
-      env:
-        BS_SSH_KEY_SECRET: ${{ secrets.SSH_KEY_SECRET }}
-        BS_ENC_KEY_SECRET: ${{ secrets.ENC_KEY_SECRET }}
-        BS_PULL_REQUEST: 'false'
-        BS_IS_DEPLOYMENT: 'false'
+    - name: List build artifacts  
+      run: |  
+        echo "=== Build Artifacts ==="  
+        ls -lh build/libs/  
+          
+    - name: Upload Universal JAR  
+      uses: actions/upload-artifact@v3  
+      with:  
+        name: TheBetweenlands-Universal  
+        path: build/libs/*-universal.jar  
+        if-no-files-found: error  
+          
+    - name: Upload Server JAR  
+      uses: actions/upload-artifact@v3  
+      with:  
+        name: TheBetweenlands-Server  
+        path: build/libs/*-server.jar  
+        if-no-files-found: error  
+          
+    - name: Upload All Artifacts  
+      uses: actions/upload-artifact@v3  
+      with:  
+        name: TheBetweenlands-All-Artifacts  
+        path: build/libs/  
+        if-no-files-found: error
