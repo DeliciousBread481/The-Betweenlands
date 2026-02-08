@@ -9,12 +9,13 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     
     - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v4
       with:
-        java-version: 1.8
+        java-version: '8'
+        distribution: 'temurin'
         
     - name: Setting up environment
       run: |
@@ -30,21 +31,21 @@ jobs:
     - name: Setting outputs
       run: |
         echo "Setting outputs"
-        echo "::set-output name=build_number::${BS_BUILD_NUMBER}"
-        echo "::set-output name=build_type::${BS_BUILD_TYPE}"
-        echo "::set-output name=build_release::${BS_BUILD_RELEASE}"
-        echo "::set-output name=build_prerelease::${BS_BUILD_PRERELEASE}"
-        echo "::set-output name=build_title::${BS_BUILD_TITLE}"
-        echo "::set-output name=build_tag::${BS_BUILD_TAG}"
-        echo "::set-output name=build_url::${BS_BUILD_URL}"
-        echo "::set-output name=build_branch::${BS_BUILD_BRANCH}"
-        echo "::set-output name=build_commit::${BS_BUILD_COMMIT}"
-        echo "::set-output name=build_notes::${BS_BUILD_NOTES}"
-        echo "::set-output name=build_workspace::${BS_BUILD_WORKSPACE}"
-        echo "::set-output name=deploy_repository_uri::${BS_DEPLOY_REPOSITORY_URI}"
-        echo "::set-output name=deploy_repository_branch::${BS_DEPLOY_REPOSITORY_BRANCH}"
-        echo "::set-output name=deploy_name::${BS_DEPLOY_NAME}"
-        echo "::set-output name=is_deployment::false"
+        echo "build_number=${BS_BUILD_NUMBER}" >> $GITHUB_OUTPUT
+        echo "build_type=${BS_BUILD_TYPE}" >> $GITHUB_OUTPUT
+        echo "build_release=${BS_BUILD_RELEASE}" >> $GITHUB_OUTPUT
+        echo "build_prerelease=${BS_BUILD_PRERELEASE}" >> $GITHUB_OUTPUT
+        echo "build_title=${BS_BUILD_TITLE}" >> $GITHUB_OUTPUT
+        echo "build_tag=${BS_BUILD_TAG}" >> $GITHUB_OUTPUT
+        echo "build_url=${BS_BUILD_URL}" >> $GITHUB_OUTPUT
+        echo "build_branch=${BS_BUILD_BRANCH}" >> $GITHUB_OUTPUT
+        echo "build_commit=${BS_BUILD_COMMIT}" >> $GITHUB_OUTPUT
+        echo "build_notes=${BS_BUILD_NOTES}" >> $GITHUB_OUTPUT
+        echo "build_workspace=${BS_BUILD_WORKSPACE}" >> $GITHUB_OUTPUT
+        echo "deploy_repository_uri=${BS_DEPLOY_REPOSITORY_URI}" >> $GITHUB_OUTPUT
+        echo "deploy_repository_branch=${BS_DEPLOY_REPOSITORY_BRANCH}" >> $GITHUB_OUTPUT
+        echo "deploy_name=${BS_DEPLOY_NAME}" >> $GITHUB_OUTPUT
+        echo "is_deployment=false" >> $GITHUB_OUTPUT
       id: "env"
         
     - name: Building
@@ -64,21 +65,21 @@ jobs:
         ls -lh build/libs/  
           
     - name: Upload Universal JAR  
-      uses: actions/upload-artifact@v3  
+      uses: actions/upload-artifact@v4  
       with:  
         name: TheBetweenlands-Universal  
         path: build/libs/*-universal.jar  
         if-no-files-found: error  
           
     - name: Upload Server JAR  
-      uses: actions/upload-artifact@v3  
+      uses: actions/upload-artifact@v4  
       with:  
         name: TheBetweenlands-Server  
         path: build/libs/*-server.jar  
         if-no-files-found: error  
           
     - name: Upload All Artifacts  
-      uses: actions/upload-artifact@v3  
+      uses: actions/upload-artifact@v4  
       with:  
         name: TheBetweenlands-All-Artifacts  
         path: build/libs/  
