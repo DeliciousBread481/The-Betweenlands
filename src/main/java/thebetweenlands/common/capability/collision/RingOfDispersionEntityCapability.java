@@ -100,21 +100,26 @@ public class RingOfDispersionEntityCapability extends EntityCapability<RingOfDis
     }
 
 	public static ItemStack getRing(EntityPlayer player) {  
-        IEquipmentCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_EQUIPMENT, null);  
-        if (cap != null) {  
-            IInventory inv = cap.getInventory(EnumEquipmentInventory.RING);  
+        try {  
+            IEquipmentCapability cap = player.getCapability(CapabilityRegistry.CAPABILITY_EQUIPMENT, null);  
+            if (cap != null) {  
+                IInventory inv = cap.getInventory(EnumEquipmentInventory.RING);  
   
-            for(int i = 0; i < inv.getSizeInventory(); i++) {  
-                ItemStack stack = inv.getStackInSlot(i);  
+                if (inv != null) { 
+                    for(int i = 0; i < inv.getSizeInventory(); i++) {  
+                        ItemStack stack = inv.getStackInSlot(i);  
   
-                if(!stack.isEmpty() && stack.getItem() instanceof ItemRingOfDispersion) {  
-                    return stack;  
+                        if(!stack.isEmpty() && stack.getItem() instanceof ItemRingOfDispersion) {  
+                            return stack;  
+                        }  
+                    }  
                 }  
             }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
         }  
-  
         return ItemStack.EMPTY;  
-    }  
+    }
 
 	public static double calculateAABBDistance(AxisAlignedBB aabb1, AxisAlignedBB aabb2) {
 		double dist;

@@ -36,11 +36,11 @@ public final class CustomEntityCollisionsHandler {
 
 	private CustomEntityCollisionsHandler() {}
 
-	private static boolean gathering = false;
+	private static final ThreadLocal<Boolean> gathering = ThreadLocal.withInitial(() -> false);  
 
 	@SubscribeEvent
 	public static void onGatherCollisionBoxes(GetCollisionBoxesEvent event) {
-		if(!gathering) {
+		if(!gathering.get()) {
 			Entity entity = event.getEntity();
 			gathering = true;
 			try {
