@@ -42,7 +42,7 @@ public final class CustomEntityCollisionsHandler {
 	public static void onGatherCollisionBoxes(GetCollisionBoxesEvent event) {
 		if(!gathering.get()) {
 			Entity entity = event.getEntity();
-			gathering = true;
+			gathering.get() = true;
 			try {
 				if(entity != null) {
 					IEntityCustomCollisionsCapability cap = entity.getCapability(CapabilityRegistry.CAPABILITY_ENTITY_CUSTOM_BLOCK_COLLISIONS, null);  
@@ -81,7 +81,7 @@ public final class CustomEntityCollisionsHandler {
 					event.getCollisionBoxesList().addAll(processedAabbList);
 				}*/
 			} finally {
-				gathering = false;
+				gathering.get() = false;
 			}
 		}
 	}
